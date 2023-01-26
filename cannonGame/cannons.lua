@@ -52,7 +52,7 @@ function newCannon(x,y,canW,canH)
     --
 
     --cannons initial angle 
-    can.rotation=0
+    can.angle=0
 
 
     can.visible=true
@@ -76,9 +76,9 @@ function setCannonPoints(cannon,x,y)
 end
 
 --[[ 
-    rotate a pt of the around a given origin 
+    rotate a pt (x,y) around a given origin s
  ]]
-function rotatePtOnCannon(x,y,cx,cy,rotation)
+function rotatePtByOrig(x,y,ox,oy,rotation)
     local sina=sin(rotation)
     local cosa=cos(rotation)
    
