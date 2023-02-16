@@ -52,7 +52,9 @@ function _update60()
     elseif btnp(RIGHT) and cur_X>=124 then
         cur_X=0
     end
-
+    if btnp(BUTTON1) and RUN==false then
+        RUN=true
+    end
 
 end
 
@@ -67,7 +69,10 @@ function _draw()
             rect(4*i,4*j,4*(i+1),4*(j+1),BLUE)--check if this is correct, think i am 1 tmany pixels for each square
         end
     end
-    DrawCursor(cur_X,cur_Y)
+    if RUN==false then
+        DrawCursor(cur_X,cur_Y)
+    end
+    
 
 end
 
@@ -83,8 +88,44 @@ function DrawCursor(x,y)
 end
 
 
+function CountNeighbors(i,j)
+    total=0
+    if i>=0 and i<=31 and j>=0 and j<=31 then
+        if cell[i-1][j].STATE ==ALIVE then
+           total+=1 
+        end
+        if cell[i-1][j-1].STATE ==ALIVE then
+            total+=1 
+        end
+        if cell[i+1][j-1].STATE ==ALIVE then
+            total+=1 
+        end
+        if cell[i+1][j].STATE ==ALIVE then
+            total+=1 
+        end
+        if cell[i+1][j+1].STATE ==ALIVE then
+            total+=1 
+        end
+        if cell[i-1][j+1].STATE ==ALIVE then
+            total+=1 
+        end
+        if cell[i][j+1].STATE ==ALIVE then
+            total+=1 
+        end
+        if cell[i][j-1].STATE ==ALIVE then
+            total+=1 
+        end
+    end
+end
 
+--this function is provide the cursors x and y and returns what cell indexes for that location 
+function curCell(x,y)
+    local x=cur_X/4
+    local y=cur_Y/4
 
+    return x,y
+
+end
 
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
