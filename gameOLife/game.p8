@@ -9,44 +9,48 @@ __lua__
 
 function _init()
     cell={}
-    curX=0
-    curY=0
+    cur_X=0
+    cur_Y=0
+
     ALIVE=10
-    DEAD=9
+    DEAD=0
     PICKING=8
+    RUN=1
+    STOP=2
+    
     for i=0,31 do
         cell[i]={}
     end
     for i=0,31 do
         for j=0,31 do
-            cell[i][j]={STATE=ALIVE,neighbors=0}
+            cell[i][j]={STATE=DEAD,neighbors=0}
         end
     end
-
-
 end
 
 function _update60()
     --to navigate the game board
-    if btnp(UP) and curY>0 then
-        curY-=4
-    elseif btnp(UP) and curY<=0 then
-        curY=124
+    --mod cur_x and/or cur_y to get which cell
+
+    if btnp(UP) and cur_Y>0 then
+        cur_Y-=4
+    elseif btnp(UP) and cur_Y<=0 then
+        cur_Y=124
     end
-    if btnp(DOWN) and curY<127 then
-        curY+=4
-    elseif btnp(DOWN) and curY>=127 then
-        curY=0
+    if btnp(DOWN) and cur_Y<124 then
+        cur_Y+=4
+    elseif btnp(DOWN) and cur_Y>=124 then
+        cur_Y=0
     end
-    if btnp(LEFT) and curX>0 then
-        curX-=4
-    elseif btnp(LEFT) and curX<=0 then
-        curX=124
+    if btnp(LEFT) and cur_X>0 then
+        cur_X-=4
+    elseif btnp(LEFT) and cur_X<=0 then
+        cur_X=124
     end
-    if btnp(RIGHT) and curX<124 then
-        curX+=4
-    elseif btnp(RIGHT) and curX>=124 then
-        curX=0
+    if btnp(RIGHT) and cur_X<124 then
+        cur_X+=4
+    elseif btnp(RIGHT) and cur_X>=124 then
+        cur_X=0
     end
 
 
@@ -60,10 +64,10 @@ function _draw()
     for i=0,31 do
         for j=0,31 do
             rectfill(4*i,4*j,4*(i+1),4*(j+1),cell[i][j].STATE)
-            rect(4*i,4*j,4*(i+1),4*(j+1),BLUE)
+            rect(4*i,4*j,4*(i+1),4*(j+1),BLUE)--check if this is correct, think i am 1 tmany pixels for each square
         end
     end
-    DrawCursor(curX,curY)
+    DrawCursor(cur_X,cur_Y)
 
 end
 
