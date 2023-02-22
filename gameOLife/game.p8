@@ -15,7 +15,7 @@ function _init()
     ALIVE=10
     DEAD=0
     PICKING=8
-    RUN=1
+    RUN=false
     STOP=2
     
     for i=0,31 do
@@ -55,7 +55,14 @@ function _update60()
     if btnp(BUTTON1) and RUN==false then
         RUN=true
     end
-
+     --if game not running and the player presses button 
+        --set current cell state to alive or dead
+        col,row=curCell(cur_X,cur_Y)
+        if btnp(BUTTON2) and cell[col][row].STATE==DEAD then
+            cell[col][row].STATE=ALIVE
+        elseif btnp(BUTTON2) and cell[col][row].STATE==ALIVE then
+            cell[col][row].STATE=DEAD
+        end
 end
 
 
@@ -71,6 +78,7 @@ function _draw()
     end
     if RUN==false then
         DrawCursor(cur_X,cur_Y)
+       
     end
     
 
