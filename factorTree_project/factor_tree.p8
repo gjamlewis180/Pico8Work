@@ -30,26 +30,43 @@ STATE=START
 function _init()
     cls()
     --lets us use the keyboard for alphanumeric input
-    poke(0x5F2D,0x1)
-    t=""--for holding given input 
-    c=""--this will be used test if the given input is valid to use for this program 
+    poke(0x5F2D,1)
+    --for holding given input 
+    t=""
+    --this will be used test if the given input is valid to use for this program
+    c="" 
+    
 end
 
 function _update60()
-    if stat(30)==true then
-        c=stat(31)--get keyboard input and store it in c
+    --disable pausing menu when enter is pressed
+    --this must be in update to work 
+    poke(0x5f30,1)
+    --printh(STATE)
+    
+    --need to fix for some reason even when state is invalid it
+    --still takes keystrokes from runtime enviorment
+    --need to find right moment to poke keyboard devkit and disable it
+    if stat(30)==true and STATE!=INVALID then
+        
+        --get keyboard input and store it in c
+        c=stat(31)
+        --for debugging printing c to terminal
         printh(c)
         if c>="\48" and c<="\57" then
-            t=t..c --add the number stored in c to t
-        elseif c=="\8" then--if backspace is pressed lets delete a character frim the string 
+            --add the number stored in c to t
+            t=t..c 
+        --if backspace is pressed lets delete a character frim the string
+        elseif c=="\8" then  
             t=backspacing(t)
+        --when the  user presses enter
         elseif c=="\13"then
             printh("time to factor the number")
-            --STATE=RUN
-            poke(0x5f30,1)--disable pausing menu when enter is pressed
-            --add the numberr to list
-
-            --add(list_of_factors,t)
+            STATE=RUN
+             
+            --add the number to list
+            add(list_of_factors,t) 
+            divide(t)
         elseif c<="\47" or c >="\58" then
             --user pressed a key that isnt a number so time to handle that
             STATE=INVALID
@@ -60,7 +77,8 @@ end
 function _draw()
     cls()
     if STATE==START then
-        print(instruct,0,1,3)--print start message
+        --print start message
+        print(instruct,0,1,3)
         --logic to make blinking cursor 
         blink_time+=1
         if blink_time<=10 then
@@ -76,34 +94,65 @@ function _draw()
             blink_time=0    
         end
         --end of cursor logic 
-    elseif STATE==INVALID and wait_time<=120 then 
+    elseif STATE==INVALID and wait_time<=30 then 
         cls()
         print(invalid_mess,0,1,3)
         wait_time+=1
-        if wait_time>=120 then
+        if wait_time>=30 then
             wait_time=0
             STATE=START
         end
+    elseif STATE==RUN then
+        cls()
+        print(printFactors(list_of_factors),30,30,8)
     end
 end
 
 --draw proper rectangle for the cursor h=x0, v=y0, x=x1,y=y1, c=color
 function grect(h,v,x,y,c)
-    rectfill(h,v,h+x-1,v+y-1,c)--the 1 is just to make the rect on pixel smaller
+    --the 1 is just to make the rect on pixel smaller
+    rectfill(h,v,h+x-1,v+y-1,c)
   end 
 
 function divide(a)
     number=a
     prime_fact=0
-    factor=0
-    if number%2 ==0 then
-
+    new_factor=0
+    if number%2 == 0 then
+        prime_fact=2
+        new_factor=number/2
+        add(list_of_factors,prime_fact)
+        add(list_of_factors,new_factor)
+    elseif number%3 == 0 then
+        prime_fact=3
+        new_factor=number/3
+        add(list_of_factors,prime_fact)
+        add(list_of_factors,new_factor)
+    elseif number%5==0 then
+        prime_fact=5
+        new_factor=number/5
+        add(list_of_factors,prime_fact)
+        add(list_of_factors,new_factor)
+    elseif number%7==0 then
+        prime_fact=7
+        new_factor=number/7
+        add(list_of_factors,prime_fact)
+        add(list_of_factors,new_factor)
     end
+    
 end
 
 --used to get length of string for math purposes 
 function len(a)
     return #a
+end
+
+function printFactors(list)
+    facts_as_string=""
+    for i=1,#list do
+        facts_as_string=facts_as_string..list_of_factors[i]..","
+    end
+    return facts_as_string
 end
 
 -- return string minus last chr
