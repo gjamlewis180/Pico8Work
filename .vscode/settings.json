@@ -1,5 +1,4 @@
 {
-    "pico8.executablePath":"C:\\PICO-8\\pico8.exe",
     "files.eol": "\n",
-    "pico8vscodeeditor.pico8fullpath": "C:\\PICO-8\\pico8.exe",
+    "luahelper.Warn.CheckSyntax": false
 }

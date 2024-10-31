@@ -1,5 +1,5 @@
 pico-8 cartridge // http://www.pico-8.com
-version 33
+version 29
 __lua__
 #include colors.lua
 
@@ -29,7 +29,7 @@ function _update60()
     y=sin(angle/360)
     y=abs(y)
     y*=ymax
-    printh(y)
+
     if (oldYmax==ymax and bounced==1) then
         bounced=0
         ymax=flr(ymax/2)     
@@ -43,17 +43,13 @@ function _update60()
         -- end 
     end
     
-    
+    printh(y)
 end
 
 function _draw()
-    cls()
-
-    circfill(x,100-y,5)
-    fillp(🐱)
-    fillp(yellow)
     line(0,100,127,100,yellow)
-
+    circfill(x,100-y,1,yellow)
+    
 end
 
 __gfx__

@@ -1,18 +1,7 @@
 pico-8 cartridge // http://www.pico-8.com
 version 29
 __lua__
-
-#include colors.lua
-#include alarms.lua
-#include 2dEngine.lua
-
 function _init()
-    gameObj={}
-
-    player=NewObject(63,63,1,0,0)
-    enemy=NewObject(63,63,2,0,0)
-    add(gameObj,player)
-    add(gameObj,enemy)
     
 end
 
@@ -21,7 +10,11 @@ function _update60()
 end
 
 function _draw()
-    
+    cls()
+    for i=0,10 do
+        print(i)
+        
+    end
 end
 
 

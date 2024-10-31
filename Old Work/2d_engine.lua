@@ -25,10 +25,7 @@ end
 
 function NewObject(x,y,w,h,sprite,speed,direction,flipped,type)
     local o ={}
-    o.x=x;
-    o.y=y; 
-    o.w=w; 
-    o.h=h;
+    o.x=x; o.y=y; o.w=w; o.h=h;
     o.sprite=sprite
     o.speed=speed or 0
     o.direction=direction or 0
