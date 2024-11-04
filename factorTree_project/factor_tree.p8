@@ -1,6 +1,8 @@
 pico-8 cartridge // http://www.pico-8.com
 version 42
 __lua__
+#include colors.lua
+
 --
 instruct=[[
   welcome to factor tree!!!
@@ -35,7 +37,10 @@ function _init()
     t=""
     --this will be used test if the given input is valid to use for this program
     c="" 
-    
+    txt_h=6
+    txt_w=4
+    x=0
+    y=0
 end
 
 function _update60()
@@ -62,8 +67,7 @@ function _update60()
         --when the  user presses enter
         elseif c=="\13"then
             printh("time to factor the number")
-            STATE=RUN
-             
+            STATE=RUN 
             --add the number to list
             add(list_of_factors,t) 
             divide(t)
@@ -104,7 +108,8 @@ function _draw()
         end
     elseif STATE==RUN then
         cls()
-        print(printFactors(list_of_factors),30,30,8)
+        --print(printFactors(list_of_factors),30,30,8)
+        make_Fact_tree()
     end
 end
 
@@ -114,32 +119,30 @@ function grect(h,v,x,y,c)
     rectfill(h,v,h+x-1,v+y-1,c)
   end 
 
-function divide(a)
-    number=a
-    prime_fact=0
-    new_factor=0
-    if number%2 == 0 then
-        prime_fact=2
-        new_factor=number/2
-        add(list_of_factors,prime_fact)
-        add(list_of_factors,new_factor)
-    elseif number%3 == 0 then
-        prime_fact=3
-        new_factor=number/3
-        add(list_of_factors,prime_fact)
-        add(list_of_factors,new_factor)
-    elseif number%5==0 then
-        prime_fact=5
-        new_factor=number/5
-        add(list_of_factors,prime_fact)
-        add(list_of_factors,new_factor)
-    elseif number%7==0 then
-        prime_fact=7
-        new_factor=number/7
-        add(list_of_factors,prime_fact)
-        add(list_of_factors,new_factor)
-    end
-    
+--[[
+    function is provided the initial number, num, if it is divisible by the current 
+    prime factor, prime_fact, then check if num divided by prime_fact is 
+    not 1 then preform the division and add the prime factor and new factor 
+    to our factor list. if num divided by prime_fact is 1 then prime_fact is the last prime factor 
+    of the original number.
+    if num is not divisible by the current prime factor then add 1 to prime_fact and call divide(num)
+    ]]
+prime_fact=2
+function divide(num)
+    if num%prime_fact == 0 then
+        if num/prime_fact!=1 then
+            num=num/prime_fact
+            add(list_of_factors,prime_fact)
+            add(list_of_factors,num)
+            divide(num)
+        else
+            printh("finished running divided function")
+            return
+        end
+    else
+        prime_fact+=1
+        divide(num)
+    end   
 end
 
 --used to get length of string for math purposes 
@@ -150,9 +153,42 @@ end
 function printFactors(list)
     facts_as_string=""
     for i=1,#list do
-        facts_as_string=facts_as_string..list_of_factors[i]..","
+        if i==#list then
+            facts_as_string=facts_as_string..list_of_factors[i]
+        else
+            facts_as_string=facts_as_string..list_of_factors[i]..","
+        end
     end
     return facts_as_string
+end
+
+function make_Fact_tree()
+    cursor()--reset system cursor to upper left
+    str=list_of_factors[1]
+    color(3)
+    x=print(str)--first number in the list of factors
+    lastX,lastY,lastClr=cursor()
+   
+    x=lastX
+    y=lastY
+    printh(x)
+    for i=2,#list_of_factors do
+        str=list_of_factors[i]
+        if i%2==0 then
+
+           -- line(x,lastY,lastX,y+txt_h,8)
+ 
+            print(str,x+(i*txt_w)-txt_w,y+(i*txt_h)+1-txt_h,3)
+        else
+            print(str,x+(i*txt_w)+txt_w,y+((i-1)*txt_h)+1-txt_h,3)
+           -- line(lastX+txt_w,lastY,lastX+(2*txt_w),lastY+txt_h)
+           -- print()
+        end
+        if i==#list_of_factors then
+            return--when we are done going through the list, finish running
+        end
+
+    end
 end
 
 -- return string minus last chr
