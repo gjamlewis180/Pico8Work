@@ -87,11 +87,11 @@ end
 
 --
 function DrawCursor(x,y)
-    -- for i=0,3 do
-    --     for j=0,3 do
-    --         pset(x+i,y+j,PICKING) 
-    --     end
-    -- end
+    for i=0,3 do
+        for j=0,3 do
+            pset(x+i,y+j,PICKING) 
+        end
+    end
     rect(x,y,x+3,y+3,PICKING)
 end
 
