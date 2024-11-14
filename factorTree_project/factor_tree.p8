@@ -71,6 +71,15 @@ function _update60()
             --add the number to list
             add(list_of_factors,t) 
             divide(t)
+            
+            --still need to add error handling for invalid numbers 
+            --[[ if tonum(t)<=98999 then
+                printh("in if")
+                STATE=INVALID
+            else
+                
+            end ]]
+            
         elseif c<="\47" or c >="\58" then
             --user pressed a key that isnt a number so time to handle that
             STATE=INVALID
@@ -98,17 +107,19 @@ function _draw()
             blink_time=0    
         end
         --end of cursor logic 
-    elseif STATE==INVALID and wait_time<=30 then 
+    elseif STATE==INVALID and wait_time<=60 then 
         cls()
         print(invalid_mess,0,1,3)
         wait_time+=1
         if wait_time>=30 then
             wait_time=0
             STATE=START
+            t=""
+            c=""
         end
     elseif STATE==RUN then
         cls()
-        --print(printFactors(list_of_factors),30,30,8)
+        --print(listAsString(list_of_factors),30,30,8)
         make_Fact_tree()
     end
 end
@@ -149,17 +160,18 @@ end
 function len(a)
     return #a
 end
+--can be used to turn contents of a list into a string
 
-function printFactors(list)
-    facts_as_string=""
+function listAsString(list)
+    data_as_string=""
     for i=1,#list do
         if i==#list then
-            facts_as_string=facts_as_string..list_of_factors[i]
+            data_as_string=data_as_string..list[i]
         else
-            facts_as_string=facts_as_string..list_of_factors[i]..","
+            data_as_string=data_as_string..list[i]..","
         end
     end
-    return facts_as_string
+    return data_as_string
 end
 
 function make_Fact_tree()
@@ -168,23 +180,47 @@ function make_Fact_tree()
     color(3)
     x=print(str)--first number in the list of factors
     lastX,lastY,lastClr=cursor()
-   
     x=lastX
     y=lastY
-    printh(x)
+    --these are for placing the lines of factor tree
+    x0=10
+    y0=6
+    lin1_x1=4
+    y1=11
+    lin2_x1=16
+    --printh(x)
     for i=2,#list_of_factors do
         str=list_of_factors[i]
         if i%2==0 then
 
-           -- line(x,lastY,lastX,y+txt_h,8)
- 
-            print(str,x+(i*txt_w)-txt_w,y+(i*txt_h)+1-txt_h,3)
+            print(str,x+(i*txt_w)-txt_w,y+(i*txt_h)-txt_h,3)
+            line(x0,y0,lin1_x1,y1,red)
+            
         else
-            print(str,x+(i*txt_w)+txt_w,y+((i-1)*txt_h)+1-txt_h,3)
-           -- line(lastX+txt_w,lastY,lastX+(2*txt_w),lastY+txt_h)
-           -- print()
+            print(str,x+(i*txt_w)+txt_w,y+((i-1)*txt_h)-txt_h,3)
+            line(x0,y0,lin2_x1,y1,red)
+            x0+=8
+            y0+=12
+            lin1_x1+=8
+            lin2_x1+=8
+            y1+=12
         end
+        
+        --[[ this is the  work to figure out the line of the tree
+        line(9,6,4,11,10)
+        line(9,6,16,11,9)
+       
+        line(18,18,13,23,8)
+        line(18,18,25,23,8)
+
+        line(27,30,21,35,8)
+        line(27,30,33,35,8)
+
+        line(36,42,30,47,8)
+        line(36,42,42,47,8)  ]]
         if i==#list_of_factors then
+            --txt=listAsString(locations)
+            --printh(txt)
             return--when we are done going through the list, finish running
         end
 
@@ -194,7 +230,9 @@ end
 -- return string minus last chr
 function backspacing(a)
     return sub(a,1,#a-1)
-  end
+end
+
+
 
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
