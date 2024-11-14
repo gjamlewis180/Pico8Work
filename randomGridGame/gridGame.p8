@@ -29,6 +29,8 @@ end
 
 function _draw()
     cls()
+
+    
     --code to draw board goes here 
     for i=0,7 do
         for j=0,7 do
