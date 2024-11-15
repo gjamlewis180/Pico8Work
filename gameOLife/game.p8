@@ -78,7 +78,6 @@ function _draw()
     end
     if RUN==false then
         DrawCursor(cur_X,cur_Y)
-       
     end
     
 
