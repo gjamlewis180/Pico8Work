@@ -61,6 +61,9 @@ function _draw()
         for j=0,7 do
             if i%2 == j%2 then
                 rectfill((16*i),(16*j),16*(i+1),16*(j+1),DARK_BLUE)
+                --does generate 32 circles but very unaligned 
+                --circfill((i*8),(j*8),5,RED)
+
             else
                 rectfill((16*i),(16*j),16*(i+1),16*(j+1),WHITE)
             end
@@ -74,7 +77,12 @@ function _draw()
     --exterior board 
     rect(0,0,127,127,BLUE) 
     DrawCursor(curX,curY)
-    
+
+    --just temporary figuring out dimension for each piece 
+    --keep for now DONT DELETE till all piece made 
+    --circfill(8,8,5,RED)
+    --circ(8,8,6,BLACK)
+    circfill(8,24,5,RED)
 end
 
 function curCell(x,y)
