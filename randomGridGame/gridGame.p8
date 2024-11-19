@@ -27,9 +27,11 @@ function _init()
             if i%2==j%2 then
                 if j<=2 then
                     checkerBoard[i][j]=p2
+                elseif j>=5 then
+                    checkerBoard[i][j]=p1
                 end
             else
-
+                checkerBoard[i][j]=0
             end
         end
     end
@@ -59,6 +61,7 @@ function _update60()
     end
     --printh(curX)
     --printh(curY)
+    --readBoard()
 end
 
 function _draw()
@@ -81,15 +84,14 @@ function _draw()
     --when 
     for i=0,7 do
         for j=0,7 do
-            if i%2 == j%2 then
-                if j<=2 then
-                    circfill((i*16)+8,(j*16)+8,6,RED)
-                    circ((i*16)+8,(j*16)+8,6,ORANGE)
-                elseif j>=5 then
-                    circfill((i*16)+8,(j*16)+8,6,YELLOW)
-                    circ((i*16)+8,(j*16)+8,6,DARK_GREEN)
-                end
+            if checkerBoard[i][j]==2 then
+                circfill((i*16)+8,(j*16)+8,6,RED)
+                circ((i*16)+8,(j*16)+8,6,ORANGE)
+            elseif checkerBoard[i][j]==1 then
+                circfill((i*16)+8,(j*16)+8,6,YELLOW)
+                circ((i*16)+8,(j*16)+8,6,DARK_GREEN)
             end
+            
         end
     end
 
@@ -130,6 +132,16 @@ function DrawCursor(x,y)
     y==112 and x==64 or y==112 and x==80 or
     y==112 and x==96 then
         rect(x,y,x+16,y+15,RED)
+    end
+end
+
+function readBoard()
+    brd=""
+    for i=0,7 do
+        for j=0,7 do
+            brd=brd..checkerBoard[i][j]
+            printh(brd)
+        end
     end
 end
 
