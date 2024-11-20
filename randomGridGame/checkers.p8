@@ -87,7 +87,7 @@ function _update60()
             if checkerBoard[row][col].state==NONE then
                 return
             else
-
+                checkerBoard[row][col].state=KING
             end
         end
     end
